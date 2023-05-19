@@ -100,6 +100,22 @@ func NewDecodeScriptCmd(hexScript string) *DecodeScriptCmd {
 	}
 }
 
+// DropTxFromMempoolCmd defines the dropmempoolentry JSON-RPC command.
+type DropTxFromMempoolCmd struct {
+	Txid string
+}
+
+// NewDropTxFromMempoolCmd returns a new instance which can be used to issue a
+// dropmempoolentry JSON-RPC command.
+//
+// The parameters which are pointers indicate they are optional.  Passing nil
+// for optional parameters will use the default value.
+func NewDropTxFromMempoolCmd(txid string) *DropTxFromMempoolCmd {
+	return &DropTxFromMempoolCmd{
+		Txid: txid,
+	}
+}
+
 // GetAddedNodeInfoCmd defines the getaddednodeinfo JSON-RPC command.
 type GetAddedNodeInfoCmd struct {
 	DNS  bool
@@ -835,6 +851,7 @@ func init() {
 	MustRegisterCmd("createrawtransaction", (*CreateRawTransactionCmd)(nil), flags)
 	MustRegisterCmd("decoderawtransaction", (*DecodeRawTransactionCmd)(nil), flags)
 	MustRegisterCmd("decodescript", (*DecodeScriptCmd)(nil), flags)
+	MustRegisterCmd("dropmempoolentry", (*DropTxFromMempoolCmd)(nil), flags)
 	MustRegisterCmd("getaddednodeinfo", (*GetAddedNodeInfoCmd)(nil), flags)
 	MustRegisterCmd("getbestblockhash", (*GetBestBlockHashCmd)(nil), flags)
 	MustRegisterCmd("getblock", (*GetBlockCmd)(nil), flags)
