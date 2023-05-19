@@ -634,12 +634,12 @@ func (c *Client) GetRawMempoolVerbose() (map[string]btcjson.GetRawMempoolVerbose
 
 // FutureDropTxFromMempoolResult is a future promise to deliver the result of a
 // DropTxFromMempool RPC invocation (or an applicable error).
-type FutureDropTxFromMempoolResult chan *Response
+type FutureDropTxFromMempoolResult chan *response
 
 // Receive waits for the Response promised by the future and returns the info
 // provided by the server.
 func (r FutureDropTxFromMempoolResult) Receive() (bool, error) {
-	res, err := ReceiveFuture(r)
+	res, err := receiveFuture(r)
 	if err != nil {
 		return false, err
 	}
@@ -659,7 +659,7 @@ func (r FutureDropTxFromMempoolResult) Receive() (bool, error) {
 // function on the returned instance.
 func (c *Client) DropTxFromMempoolAsync(txHash string) FutureDropTxFromMempoolResult {
 	cmd := btcjson.NewDropTxFromMempoolCmd(txHash)
-	return c.SendCmd(cmd)
+	return c.sendCmd(cmd)
 }
 
 // DropTxFromMempool removes a transaction from the memory pool.
